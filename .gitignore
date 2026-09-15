@@ -1,0 +1,6 @@
+/target
+*.shortcut
+*.log
+.DS_Store
+# never commit a real config
+config.toml
