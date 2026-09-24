@@ -76,7 +76,11 @@ pub fn exchange_passphrase(
     username: &str,
     passphrase: &str,
 ) -> Result<String> {
-    let otp = passphrase.split_whitespace().collect::<Vec<_>>().join("+");
+    let otp = passphrase
+        .split_whitespace()
+        .map(urlencode)
+        .collect::<Vec<_>>()
+        .join("+");
     let url = format!("{BASE}/auth/login?user={}&otp={otp}", urlencode(username));
     let login: Value = agent
         .get(&url)
@@ -140,7 +144,7 @@ mod tests {
 
     #[test]
     fn urlencode_keeps_unreserved() {
-        assert_eq!(urlencode("dan.hart-1_~"), "dan.hart-1_~");
+        assert_eq!(urlencode("alice.smith-1_~"), "alice.smith-1_~");
         assert_eq!(urlencode("a b@c"), "a%20b%40c");
     }
 }

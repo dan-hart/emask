@@ -24,4 +24,15 @@ Thanks for looking. emask is small on purpose; please keep it that way.
 
 ## Releasing
 
-Bump `version` in `Cargo.toml`, add a `CHANGELOG.md` entry, tag `vX.Y.Z`.
+1. Bump `version` in `Cargo.toml` (and `Cargo.lock` via `cargo build`).
+2. Add a `## X.Y.Z — YYYY-MM-DD` section to `CHANGELOG.md`.
+3. Merge to `main`, then tag and push:
+
+   ```bash
+   git tag -a vX.Y.Z -m "emask X.Y.Z"
+   git push origin vX.Y.Z
+   ```
+
+The `Release` workflow builds macOS and Linux binaries, checks that the tag
+matches `Cargo.toml`, and publishes a GitHub release whose notes are the
+matching `CHANGELOG.md` section.

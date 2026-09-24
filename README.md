@@ -1,5 +1,8 @@
 # emask
 
+[![CI](https://github.com/dan-hart/emask/actions/workflows/ci.yml/badge.svg)](https://github.com/dan-hart/emask/actions/workflows/ci.yml)
+[![License: AGPL-3.0-or-later](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue.svg)](LICENSE)
+
 Mint a masked email address from the terminal and have it on your clipboard
 before the signup form finishes loading.
 
@@ -27,11 +30,19 @@ well-marked change — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Install
 
+Prebuilt binaries for macOS (Apple silicon and Intel) and Linux x86_64 are on
+the [releases page](https://github.com/dan-hart/emask/releases), each with a
+`SHA256SUMS` file. Unpack and put `emask` somewhere on your `PATH`.
+
+Or build from source (Rust 1.88 or newer):
+
 ```bash
-cargo install --git https://github.com/dan-hart/emask
+cargo install --git https://github.com/dan-hart/emask --tag v0.1.0
 ```
 
 or clone and `cargo install --path .`. The binary lands in `~/.cargo/bin/emask`.
+On Linux the clipboard needs the X11 `xcb` development headers at build time
+(`libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev` on Debian/Ubuntu).
 
 Shell completions:
 
