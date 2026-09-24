@@ -34,7 +34,7 @@ Prebuilt binaries for macOS (Apple silicon and Intel) and Linux x86_64 are on
 the [releases page](https://github.com/dan-hart/emask/releases), each with a
 `SHA256SUMS` file. Unpack and put `emask` somewhere on your `PATH`.
 
-Or build from source (Rust 1.85 or newer):
+Or build from source (Rust 1.88 or newer):
 
 ```bash
 cargo install --git https://github.com/dan-hart/emask --tag v0.1.0
