@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.3 — 2026-10-28
 
 - Automatically publish the Homebrew formula after stable releases, with
   checksum verification, Homebrew checks, scoped deploy-key access, safe

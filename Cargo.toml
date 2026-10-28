@@ -1,6 +1,6 @@
 [package]
 name = "emask"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 rust-version = "1.88"
 description = "Superfast CLI that mints masked email addresses (Fastmail, DuckDuckGo) and copies them to your clipboard"
