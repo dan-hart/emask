@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Automatically publish the Homebrew formula after stable releases, with
+  checksum verification, Homebrew checks, scoped deploy-key access, safe
+  reruns, downgrade protection and retries for concurrent tap updates.
+
 ## 0.1.2 — 2026-10-28
 
 - Document `brew install dan-hart/tap/emask` and Homebrew upgrades in CLI help,

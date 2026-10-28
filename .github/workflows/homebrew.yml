@@ -1,0 +1,89 @@
+name: Homebrew
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
+    secrets:
+      HOMEBREW_TAP_SSH_KEY:
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Published stable release tag, for example v0.1.2"
+        type: string
+        required: true
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: emask-homebrew-publication
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify and update Homebrew tap
+    if: ${{ github.event_name != 'release' || (!github.event.release.draft && !github.event.release.prerelease) }}
+    runs-on: macos-latest
+    timeout-minutes: 20
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - name: Check out trusted publication tooling
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Validate stable release tag
+        run: python3 scripts/homebrew.py validate-tag "$RELEASE_TAG"
+      - name: Require the tap credential
+        env:
+          HOMEBREW_TAP_SSH_KEY: ${{ secrets.HOMEBREW_TAP_SSH_KEY }}
+        run: |
+          if [ -z "$HOMEBREW_TAP_SSH_KEY" ]; then
+            echo "::error::Missing HOMEBREW_TAP_SSH_KEY; see docs/homebrew.md"
+            exit 1
+          fi
+      - name: Download published metadata and archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --json tagName,isDraft,isPrerelease > release.json
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --dir dist \
+            --pattern "emask-${RELEASE_TAG#v}-*.tar.gz" --pattern SHA256SUMS
+      - name: Check out the scoped tap
+        uses: actions/checkout@v4
+        with:
+          repository: dan-hart/homebrew-tap
+          ref: main
+          ssh-key: ${{ secrets.HOMEBREW_TAP_SSH_KEY }}
+          ssh-strict: true
+          fetch-depth: 0
+          path: tap
+      - name: Verify archives and prepare the formula
+        run: >-
+          python3 scripts/homebrew.py prepare --tag "$RELEASE_TAG"
+          --assets dist --tap tap --release-json release.json
+      - name: Check and install the prepared Homebrew formula
+        run: |
+          brew tap dan-hart/tap
+          tap_path="$(brew --repository dan-hart/tap)"
+          cp tap/Formula/emask.rb "$tap_path/Formula/emask.rb"
+          brew style dan-hart/tap/emask
+          brew audit --strict dan-hart/tap/emask
+          brew install dan-hart/tap/emask
+          brew test dan-hart/tap/emask
+      - name: Publish the tested formula
+        run: |
+          git -C tap config user.name "github-actions[bot]"
+          git -C tap config user.email "github-actions[bot]@users.noreply.github.com"
+          python3 scripts/homebrew.py publish --tag "$RELEASE_TAG" \
+            --assets dist --tap tap --release-json release.json
