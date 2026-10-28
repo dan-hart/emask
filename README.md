@@ -58,7 +58,7 @@ the [releases page](https://github.com/dan-hart/emask/releases), each with a
 Or build from source (Rust 1.88 or newer):
 
 ```bash
-cargo install --git https://github.com/dan-hart/emask --tag v0.1.2
+cargo install --git https://github.com/dan-hart/emask --tag v0.1.3
 ```
 
 or clone and `cargo install --path .`. The binary lands in `~/.cargo/bin/emask`.

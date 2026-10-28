@@ -95,7 +95,7 @@ After a transient download, runner, or Git push failure, rerun the failed job
 in Actions or dispatch a fresh run with the published stable tag:
 
 ```bash
-gh workflow run homebrew.yml --repo dan-hart/emask --ref main -f tag=v0.1.2
+gh workflow run homebrew.yml --repo dan-hart/emask --ref main -f tag=v0.1.3
 gh run list --repo dan-hart/emask --workflow homebrew.yml
 ```
 
