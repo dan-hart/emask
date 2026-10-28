@@ -14,7 +14,13 @@ Then sign and open them (macOS 12+):
     shortcuts sign --mode anyone --input "DDG Masked Email.shortcut" --output "DDG Masked Email.signed.shortcut"
     open "DDG Masked Email.signed.shortcut"      # click "Add Shortcut"
 
-Requirements: emask installed at ~/.cargo/bin/emask (or on PATH) and
+Install and configure emask first:
+
+    brew install dan-hart/tap/emask
+    emask setup
+
+Upgrade with: brew update && brew upgrade dan-hart/tap/emask
+Requirements: emask on PATH, in /opt/homebrew/bin, /usr/local/bin, or ~/.cargo/bin, and
 Shortcuts → Settings → Advanced → "Allow Running Scripts" enabled.
 The shortcut's shell script is deliberately tiny; all logic lives in emask.
 """
@@ -28,8 +34,13 @@ os.makedirs(OUT, exist_ok=True)
 
 # Shortcuts runs scripts with a minimal PATH; find emask explicitly.
 PRELUDE = (
-    'EMASK="$HOME/.cargo/bin/emask"\n'
-    '[ -x "$EMASK" ] || EMASK="$(command -v emask)" || { echo "emask not found" >&2; exit 1; }\n'
+    'EMASK="$(command -v emask || true)"\n'
+    'if [ -z "$EMASK" ]; then\n'
+    '  for candidate in /opt/homebrew/bin/emask /usr/local/bin/emask "$HOME/.cargo/bin/emask"; do\n'
+    '    if [ -x "$candidate" ]; then EMASK="$candidate"; break; fi\n'
+    '  done\n'
+    'fi\n'
+    '[ -n "$EMASK" ] || { echo "emask not found. Install with: brew install dan-hart/tap/emask; then run emask setup in a terminal." >&2; exit 1; }\n'
 )
 
 

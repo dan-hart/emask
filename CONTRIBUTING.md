@@ -2,6 +2,17 @@
 
 Thanks for looking. emask is small on purpose; please keep it that way.
 
+## Install and develop
+
+For the released CLI, use `brew install dan-hart/tap/emask`, then `emask setup`.
+The [Homebrew guide](docs/homebrew.md) covers upgrades, installed paths,
+completions, and moving from Cargo.
+
+For development, install Rust 1.88 or newer, clone this repository, and use
+`cargo run -- --help` or `cargo run -- setup`. This runs your checkout without
+replacing the Homebrew installation. See the [README](README.md#install) for
+Linux clipboard build dependencies.
+
 ## Ground rules
 
 - **No secrets, no personal data in the repo.** Tests and docs use
@@ -36,3 +47,11 @@ Thanks for looking. emask is small on purpose; please keep it that way.
 The `Release` workflow builds macOS and Linux binaries, checks that the tag
 matches `Cargo.toml`, and publishes a GitHub release whose notes are the
 matching `CHANGELOG.md` section.
+
+After the release workflow finishes, update
+[`Formula/emask.rb` in dan-hart/homebrew-tap](https://github.com/dan-hart/homebrew-tap/blob/main/Formula/emask.rb)
+with the new release URLs and verified SHA-256 hashes for all three platforms.
+Run Homebrew style, strict audit, installation, and formula tests before
+publishing the tap update. This is a separate step: the release workflow does
+not currently update the tap. Follow the full [Homebrew release checklist](docs/homebrew.md#publishing-a-homebrew-update),
+including updating versioned install examples in the README.

@@ -29,4 +29,8 @@
 - [x] Run `cargo fmt --all --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test`, and `cargo build --release`.
 - [x] Exercise the release binary via a pseudo-terminal with an isolated config and synthetic tokens, including all-skipped, token-hidden, existing-account and EOF paths.
 - [x] Request code review, address important findings, rerun relevant checks.
-- [ ] Commit and push to the existing release branch, wait for CI, tag v0.1.1 and publish a GitHub release with notes. Verify remote tag, release, version and clean worktree.
+- [x] Commit and push to the existing release branch, wait for CI, tag v0.1.1 and publish a GitHub release with notes. Verify remote tag, release, version and clean worktree.
+
+Homebrew distribution was subsequently published as `dan-hart/tap/emask`.
+See [the Homebrew guide](../../homebrew.md) for current install and upgrade
+commands and the additional tap-publishing step required after app releases.

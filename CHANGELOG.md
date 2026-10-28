@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.2 — 2026-10-28
+
+- Document `brew install dan-hart/tap/emask` and Homebrew upgrades in CLI help,
+  setup and completion help, the README, contributor guide, security guide,
+  and Shortcuts instructions.
+- Add a Homebrew guide covering installation, upgrades, completions, migrating
+  from Cargo, and updating the tap after each GitHub release.
+- Include the user guides in release archives and Homebrew's installed docs.
+- Fix generated Apple Shortcuts to find Homebrew's binary even with a minimal
+  `PATH`, and include installation guidance when no binary is found.
+
 ## 0.1.1 — 2026-10-28
 
 - Add `emask setup`: a guided terminal wizard for Fastmail and DuckDuckGo,
