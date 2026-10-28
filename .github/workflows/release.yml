@@ -79,3 +79,15 @@ jobs:
           files: |
             dist/*.tar.gz
             dist/SHA256SUMS
+
+  homebrew:
+    name: Publish Homebrew formula
+    needs: release
+    if: ${{ !contains(github.ref_name, '-') }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/homebrew.yml
+    with:
+      tag: ${{ github.ref_name }}
+    secrets:
+      HOMEBREW_TAP_SSH_KEY: ${{ secrets.HOMEBREW_TAP_SSH_KEY }}

@@ -2,5 +2,6 @@
 *.shortcut
 *.log
 .DS_Store
+__pycache__/
 # never commit a real config
 config.toml

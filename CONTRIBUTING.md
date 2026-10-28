@@ -22,6 +22,10 @@ Linux clipboard build dependencies.
   `crate::secret::Secret`. Reach for `.expose()` only at the HTTP call site.
 - `cargo fmt`, `cargo clippy --all-targets -- -D warnings`, and `cargo test`
   must pass; CI runs them on Linux and macOS.
+- For publication tooling changes, install `PyYAML==6.0.2` in your Python test
+  environment and run `python3 -m unittest discover -s tests -p 'test_homebrew*.py' -v`.
+  Tests use synthetic assets and temporary Git repositories; no credentials
+  or live tap writes are needed.
 
 ## Adding a provider
 
@@ -48,10 +52,14 @@ The `Release` workflow builds macOS and Linux binaries, checks that the tag
 matches `Cargo.toml`, and publishes a GitHub release whose notes are the
 matching `CHANGELOG.md` section.
 
-After the release workflow finishes, update
-[`Formula/emask.rb` in dan-hart/homebrew-tap](https://github.com/dan-hart/homebrew-tap/blob/main/Formula/emask.rb)
-with the new release URLs and verified SHA-256 hashes for all three platforms.
-Run Homebrew style, strict audit, installation, and formula tests before
-publishing the tap update. This is a separate step: the release workflow does
-not currently update the tap. Follow the full [Homebrew release checklist](docs/homebrew.md#publishing-a-homebrew-update),
-including updating versioned install examples in the README.
+After publishing a stable release, the workflow automatically calls the
+Homebrew publisher. It downloads and verifies the public archives, updates only
+`Formula/emask.rb` in `dan-hart/homebrew-tap`, and runs Homebrew style, strict
+audit, installation and tests before pushing. A dedicated tap deploy key is
+stored in the `HOMEBREW_TAP_SSH_KEY` repository secret.
+
+The Homebrew workflow also handles manually published stable releases and can
+be rerun against an existing tag. Check that the Homebrew job succeeds before
+considering distribution complete. See [Homebrew publication and recovery](docs/homebrew.md#publishing-a-homebrew-update)
+for retries, credential rotation and fallback instructions. Continue updating
+the README's pinned source-install tag when bumping the application version.
