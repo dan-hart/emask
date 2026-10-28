@@ -51,7 +51,9 @@ impl Kind {
 
     pub fn setup_hint(self, name: &str) -> String {
         match self {
-            Kind::Fastmail => format!("emask auth set {name} --token <TOKEN>"),
+            Kind::Fastmail => {
+                format!("emask setup {name}  # or: emask auth set {name} (hidden token prompt)")
+            }
             Kind::DuckDuckGo => format!("emask auth login {name} --user <duck-username>"),
         }
     }
@@ -113,7 +115,7 @@ pub fn require_token<'a>(name: &str, cfg: &'a ProviderConfig) -> Result<&'a str>
     {
         Some(t) => Ok(t),
         None => bail!(
-            "provider '{name}' has no token.\n{}\nThen run: emask auth set {name} --token <TOKEN>",
+            "provider '{name}' has no token.\n{}\nThen run: emask setup {name}\nOr use the hidden prompt: emask auth set {name}",
             cfg.kind.token_help()
         ),
     }

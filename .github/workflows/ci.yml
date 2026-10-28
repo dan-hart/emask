@@ -20,6 +20,7 @@ jobs:
       - run: cargo clippy --all-targets -- -D warnings
       - run: cargo test
       - run: cargo build --release
+      - run: python3 tests/terminal_smoke.py target/release/emask
   msrv:
     name: MSRV (1.88)
     runs-on: ubuntu-latest

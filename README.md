@@ -54,6 +54,40 @@ emask completions fish > ~/.config/fish/completions/emask.fish
 
 ## Quick start
 
+Run the guided setup wizard:
+
+```bash
+emask setup
+```
+
+It walks you through Fastmail and DuckDuckGo, shows where to get credentials,
+and lets you paste each token into a hidden prompt. Press Enter to accept a
+suggested choice; answer `n` to skip a service. DuckDuckGo also offers email
+passphrase login, so you can connect it without finding an access token.
+You can paste with your terminal's normal paste shortcut (Cmd+V on Mac);
+tokens and passphrases will not appear on screen.
+
+Fastmail credentials are checked before saving. A pasted DuckDuckGo token is
+saved without verification; run `emask ddg` afterwards to test it by creating
+an address. The wizard itself never creates addresses. Each completed account
+is saved privately, and the wizard helps you choose a default at the end.
+Then run `emask` to mint your first address.
+
+Re-run `emask setup` whenever you need it: existing tokens are kept unless you
+explicitly choose to replace them. A blank token skips that account, and a failed
+Fastmail check offers retry or skip without replacing saved credentials. You can
+also set up just one service or update an existing named account:
+
+```bash
+emask setup fm
+emask setup ddg
+emask setup work      # an existing named account
+```
+
+Setup requires an interactive terminal. For scripts, or if you prefer to configure
+each service directly, use the commands below. `--config FILE` and `$EMASK_CONFIG`
+work with the wizard just like other commands.
+
 ### Fastmail
 
 1. Create an API token at <https://app.fastmail.com/settings/security/tokens/new>
@@ -102,6 +136,7 @@ emask                 # → a Fastmail address
 
 | Command | What it does |
 |---|---|
+| `emask setup [PROVIDER]` | Guided token entry, optional DuckDuckGo login, and default selection |
 | `emask <PROVIDER>` | Mint an address, print it, copy it |
 | `emask <PROVIDER> --for SITE` | Label it with the site (Fastmail stores this; DuckDuckGo cannot) |
 | `emask <PROVIDER> --json` | `{"email","provider","kind","copied","note"}` for scripts |

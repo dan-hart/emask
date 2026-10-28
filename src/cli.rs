@@ -31,6 +31,7 @@ Examples:
   emask fm --json --no-copy      Machine-readable output, leave the clipboard alone
 
 Setup:
+  emask setup                    Guided setup for every service (recommended)
   emask auth set fm              Fastmail API token (prompted, hidden)
   emask auth login ddg --user NAME
                                  DuckDuckGo: one-time passphrase login
@@ -47,7 +48,6 @@ Docs:   https://github.com/dan-hart/emask";
     about = "Mint a masked email address and copy it to your clipboard.",
     long_about = LONG_ABOUT,
     after_help = EXAMPLES,
-    args_conflicts_with_subcommands = true,
     subcommand_negates_reqs = true
 )]
 pub struct Cli {
@@ -66,7 +66,7 @@ pub struct Cli {
     command: Option<Command>,
 }
 
-#[derive(Args, Debug, Clone, Default)]
+#[derive(Args, Debug, Clone, Default, PartialEq, Eq)]
 struct CreateArgs {
     /// Site or domain the address is for (Fastmail stores it; DuckDuckGo cannot)
     #[arg(short = 'f', long = "for", value_name = "SITE")]
@@ -91,6 +91,16 @@ struct CreateArgs {
 
 #[derive(Subcommand, Debug)]
 enum Command {
+    /// Walk through service setup with hidden token prompts
+    #[command(
+        after_help = "Examples:\n  emask setup               Set up Fastmail and DuckDuckGo\n  emask setup fm            Set up just Fastmail\n  emask setup work          Update an existing named account\n\nRequires an interactive terminal. For scripts, use `emask auth set`."
+    )]
+    Setup {
+        /// Existing provider name or service alias (fm, fastmail, ddg, duckduckgo)
+        #[arg(value_name = "PROVIDER")]
+        provider: Option<String>,
+    },
+
     /// Create a new masked address (same as `emask [PROVIDER]`)
     #[command(after_help = "Examples:\n  emask new fm --for example.com\n  emask new ddg --json")]
     New {
@@ -252,9 +262,15 @@ enum ConfigCmd {
 
 pub fn run() -> Result<()> {
     let cli = Cli::parse();
+    // clap's args_conflicts_with_subcommands also suppresses subcommands after
+    // global flags such as --config. Check only root mint arguments here.
+    if cli.command.is_some() && (cli.provider.is_some() || cli.create != CreateArgs::default()) {
+        bail!("provider and mint options cannot precede a subcommand; use `emask new <PROVIDER> [OPTIONS]` to create an address");
+    }
     let path = Config::path(cli.config.as_deref())?;
 
     match cli.command {
+        Some(Command::Setup { provider }) => crate::setup::run(&path, provider.as_deref()),
         None => create(&path, cli.provider.as_deref(), &cli.create),
         Some(Command::New {
             provider,
@@ -338,6 +354,7 @@ fn list_providers(path: &Path) -> Result<()> {
     let config = Config::load(path)?;
     if config.providers.is_empty() {
         eprintln!("No providers configured ({}).\n", path.display());
+        eprintln!("  emask setup                          # Guided setup for both services");
         eprintln!("  emask auth set fm                    # Fastmail (prompts for the token)");
         eprintln!("  emask auth login ddg --user <NAME>   # DuckDuckGo");
         return Ok(());
@@ -757,5 +774,23 @@ mod tests {
                 cmd: AuthCmd::Login { .. }
             })
         ));
+    }
+
+    #[test]
+    fn setup_is_a_subcommand_with_optional_provider_and_global_config() {
+        for args in [
+            vec!["emask", "setup"],
+            vec!["emask", "--config", "/tmp/example.toml", "setup"],
+            vec![
+                "emask",
+                "setup",
+                "fastmail",
+                "--config",
+                "/tmp/example.toml",
+            ],
+        ] {
+            let cli = Cli::try_parse_from(args).unwrap();
+            assert!(cli.command.is_some(), "setup must not mint an address");
+        }
     }
 }
