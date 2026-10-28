@@ -30,6 +30,15 @@ well-marked change — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Install
 
+With Homebrew:
+
+```bash
+brew install dan-hart/tap/emask
+```
+
+Homebrew installs the binary and shell completions. Then run `emask setup`
+to connect your email services.
+
 Prebuilt binaries for macOS (Apple silicon and Intel) and Linux x86_64 are on
 the [releases page](https://github.com/dan-hart/emask/releases), each with a
 `SHA256SUMS` file. Unpack and put `emask` somewhere on your `PATH`.
@@ -37,14 +46,14 @@ the [releases page](https://github.com/dan-hart/emask/releases), each with a
 Or build from source (Rust 1.88 or newer):
 
 ```bash
-cargo install --git https://github.com/dan-hart/emask --tag v0.1.0
+cargo install --git https://github.com/dan-hart/emask --tag v0.1.1
 ```
 
 or clone and `cargo install --path .`. The binary lands in `~/.cargo/bin/emask`.
 On Linux the clipboard needs the X11 `xcb` development headers at build time
 (`libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev` on Debian/Ubuntu).
 
-Shell completions:
+Shell completions for other installation methods:
 
 ```bash
 emask completions zsh  > ~/.zfunc/_emask      # zsh (ensure ~/.zfunc is in fpath)
