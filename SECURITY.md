@@ -5,7 +5,13 @@ is to not leak them.
 
 ## What emask does with tokens
 
-- **Input.** `emask auth set` reads the token from a hidden terminal prompt,
+- **Input.** `emask setup` reads tokens and email passphrases from hidden
+  terminal prompts; it requires an interactive terminal. Existing credentials
+  are kept unless replacement is explicitly selected, and Fastmail replacements
+  are checked before saving. Pasted DuckDuckGo tokens cannot be checked without
+  minting an address and are labelled as unverified. Service failures in the
+  wizard use generic messages so response bodies and login URLs cannot expose
+  credentials. `emask auth set` reads the token from a hidden terminal prompt,
   from a file (`--token-file`, first line only), or from stdin when piped.
   `--token` on the command line is accepted for scripting but prints a warning
   because it is visible in shell history and `ps`.

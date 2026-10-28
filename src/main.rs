@@ -11,6 +11,7 @@ mod config;
 mod http;
 mod providers;
 mod secret;
+mod setup;
 
 fn main() {
     if let Err(err) = cli::run() {

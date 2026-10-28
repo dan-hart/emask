@@ -227,7 +227,7 @@ impl Config {
 
     fn known_hint(&self) -> String {
         if self.providers.is_empty() {
-            "\nNothing is configured yet. Start with:\n  emask auth set fm --token <TOKEN>       # Fastmail\n  emask auth login ddg --user <NAME>      # DuckDuckGo".to_string()
+            "\nNothing is configured yet. Run `emask setup` for guided setup.\nOr configure a service directly:\n  emask auth set fm                      # Fastmail (hidden token prompt)\n  emask auth login ddg --user <NAME>      # DuckDuckGo".to_string()
         } else {
             format!(
                 " Configured: {}. Kind aliases: fm/fastmail, ddg/duckduckgo.",
