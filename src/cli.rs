@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //! Command surface. `emask <provider>` is the hot path; everything else is
-//! setup and housekeeping. All secrets enter through [`read_secret`].
+//! setup and housekeeping. Auth commands read secrets through [`read_secret`];
+//! the setup wizard uses hidden terminal prompts in [`crate::setup`].
 
 use crate::clipboard;
 use crate::config::{write_private, Config, ProviderConfig};
@@ -29,6 +30,12 @@ Examples:
   emask fm --for example.com     Label the address with the site it is for
   emask                          Use the default provider (see `emask default`)
   emask fm --json --no-copy      Machine-readable output, leave the clipboard alone
+
+Homebrew:
+  brew install dan-hart/tap/emask
+                                 Install emask and shell completions
+  brew update && brew upgrade dan-hart/tap/emask
+                                 Upgrade to the latest release
 
 Setup:
   emask setup                    Guided setup for every service (recommended)
@@ -93,7 +100,7 @@ struct CreateArgs {
 enum Command {
     /// Walk through service setup with hidden token prompts
     #[command(
-        after_help = "Examples:\n  emask setup               Set up Fastmail and DuckDuckGo\n  emask setup fm            Set up just Fastmail\n  emask setup work          Update an existing named account\n\nRequires an interactive terminal. For scripts, use `emask auth set`."
+        after_help = "Examples:\n  emask setup               Set up Fastmail and DuckDuckGo\n  emask setup fm            Set up just Fastmail\n  emask setup work          Update an existing named account\n\nInstall: brew install dan-hart/tap/emask\nUpgrade: brew update && brew upgrade dan-hart/tap/emask\nHomebrew installs shell completions automatically.\nRequires an interactive terminal. For scripts, use `emask auth set`."
     )]
     Setup {
         /// Existing provider name or service alias (fm, fastmail, ddg, duckduckgo)
@@ -159,7 +166,7 @@ enum Command {
 
     /// Print shell completions (bash, zsh, fish, elvish, powershell)
     #[command(
-        after_help = "Examples:\n  emask completions zsh > ~/.zfunc/_emask\n  emask completions bash > /etc/bash_completion.d/emask"
+        after_help = "Homebrew installs Bash, Zsh, and Fish completions automatically:\n  brew install dan-hart/tap/emask\n\nFor other installation methods:\n  emask completions zsh > ~/.zfunc/_emask\n  emask completions bash > ~/.local/share/bash-completion/completions/emask\n  emask completions fish > ~/.config/fish/completions/emask.fish\n\nCreate the destination directory first. For Zsh, ensure ~/.zfunc is in fpath."
     )]
     Completions {
         #[arg(value_enum)]

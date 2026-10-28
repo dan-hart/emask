@@ -11,6 +11,19 @@ notification showing the address. emask does the copying.
 
 ## Build and install
 
+Install emask and connect your services in a terminal first:
+
+```bash
+brew install dan-hart/tap/emask
+emask setup
+```
+
+Homebrew installs shell completions too. To update emask later, run
+`brew update && brew upgrade dan-hart/tap/emask`. See the
+[Homebrew guide](homebrew.md) for installation paths and moving from Cargo.
+
+Then clone this repository and generate the Shortcuts from its root directory:
+
 ```bash
 python3 contrib/shortcuts/build.py /tmp/emask-shortcuts
 cd /tmp/emask-shortcuts
@@ -29,8 +42,10 @@ shortcuts run "DDG Masked Email"
 
 ## Requirements
 
-- `emask` installed (the script looks in `~/.cargo/bin/emask`, then `PATH`)
-  with providers configured (`emask providers`).
+- `emask` installed with `brew install dan-hart/tap/emask` or another method,
+  with providers configured using `emask setup` (`emask providers` lists them).
+  Generated scripts check `PATH`, then `/opt/homebrew/bin/emask` (Apple Silicon),
+  `/usr/local/bin/emask` (Intel Mac), and `~/.cargo/bin/emask` (Cargo).
 - Shortcuts → Settings → Advanced → **Allow Running Scripts** turned on.
 - The first run asks you to allow the shortcut to run scripts; choose *Always Allow*.
 
@@ -43,8 +58,13 @@ and the same behaviour from a terminal, Raycast, Alfred, or Shortcuts.
 
 ## Troubleshooting
 
-- **"emask not found"** — install with `cargo install --path .` or edit the
-  script line `EMASK=...` in the shortcut.
+- **"emask not found"** — install with `brew install dan-hart/tap/emask`.
+  Shortcuts uses a minimal `PATH`; regenerate older Shortcuts with the current
+  script to include Homebrew paths. For a custom installation, set `EMASK` to
+  the absolute path printed by `command -v emask` in the shortcut's shell script.
+- **Wrong version runs** — run `command -v emask` and `emask --version` in a
+  terminal; see [moving from Cargo](homebrew.md#moving-from-cargo). Regenerate
+  older Shortcuts that explicitly point to the Cargo binary.
 - **Notification shows an error** — it is emask's own message; run the same
   command in a terminal (`emask ddg`) for the full text and hints.
 - **Nothing happens** — check Shortcuts' *Allow Running Scripts* setting.

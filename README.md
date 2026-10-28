@@ -30,7 +30,7 @@ well-marked change — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Install
 
-With Homebrew:
+With [Homebrew](docs/homebrew.md) on macOS (Apple Silicon or Intel) or Linux x86_64:
 
 ```bash
 brew install dan-hart/tap/emask
@@ -39,6 +39,18 @@ brew install dan-hart/tap/emask
 Homebrew installs the binary and shell completions. Then run `emask setup`
 to connect your email services.
 
+To upgrade:
+
+```bash
+brew update
+brew upgrade dan-hart/tap/emask
+emask --version
+```
+
+Upgrading keeps your existing service configuration. If an older Cargo install
+shadows the Homebrew binary, follow the [migration steps](docs/homebrew.md#moving-from-cargo)
+before running setup.
+
 Prebuilt binaries for macOS (Apple silicon and Intel) and Linux x86_64 are on
 the [releases page](https://github.com/dan-hart/emask/releases), each with a
 `SHA256SUMS` file. Unpack and put `emask` somewhere on your `PATH`.
@@ -46,7 +58,7 @@ the [releases page](https://github.com/dan-hart/emask/releases), each with a
 Or build from source (Rust 1.88 or newer):
 
 ```bash
-cargo install --git https://github.com/dan-hart/emask --tag v0.1.1
+cargo install --git https://github.com/dan-hart/emask --tag v0.1.2
 ```
 
 or clone and `cargo install --path .`. The binary lands in `~/.cargo/bin/emask`.

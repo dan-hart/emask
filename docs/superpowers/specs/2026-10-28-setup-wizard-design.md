@@ -27,3 +27,7 @@ CLI parsing tests, private-file persistence tests, a real-terminal smoke test,
 formatting, clippy, the complete test suite, and a release build. Publish version
 0.1.1 using the repository's version/changelog/tag release convention and a
 GitHub release after CI succeeds. Do not use real credentials in tests.
+
+Distribution follow-up: the released CLI is also available through
+`brew install dan-hart/tap/emask`, followed by `emask setup`. The
+[Homebrew guide](../../homebrew.md) documents upgrades and tap maintenance.

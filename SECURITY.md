@@ -3,6 +3,23 @@
 emask exists to hold API tokens and use them on your behalf, so its whole job
 is to not leak them.
 
+## Installing and upgrading
+
+The maintained Homebrew package is `dan-hart/tap/emask`:
+
+```bash
+brew install dan-hart/tap/emask
+emask setup
+```
+
+The [tap formula](https://github.com/dan-hart/homebrew-tap/blob/main/Formula/emask.rb)
+pins a published binary archive and its SHA-256 checksum for each supported
+platform; Homebrew verifies that checksum when installing. Direct downloads
+include a `SHA256SUMS` file on the [release page](https://github.com/dan-hart/emask/releases).
+See the [Homebrew guide](docs/homebrew.md) for upgrades and verification.
+Tokens stay in emask's private configuration, separate from Homebrew's package
+files; upgrading the package does not require re-entering them.
+
 ## What emask does with tokens
 
 - **Input.** `emask setup` reads tokens and email passphrases from hidden
