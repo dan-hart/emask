@@ -7,6 +7,7 @@
   and Shortcuts instructions.
 - Add a Homebrew guide covering installation, upgrades, completions, migrating
   from Cargo, and updating the tap after each GitHub release.
+- Include the user guides in release archives and Homebrew's installed docs.
 - Fix generated Apple Shortcuts to find Homebrew's binary even with a minimal
   `PATH`, and include installation guidance when no binary is found.
 
