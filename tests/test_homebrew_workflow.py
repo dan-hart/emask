@@ -47,6 +47,13 @@ class HomebrewWorkflowTests(unittest.TestCase):
             self.assertGreater(index, prepare)
             self.assertLess(index, publish)
 
+    def test_formula_is_trusted_before_homebrew_loads_it(self):
+        steps = load("homebrew.yml")["jobs"]["publish"]["steps"]
+        commands = "\n".join(step.get("run", "") for step in steps).splitlines()
+        trust = "brew trust --formula dan-hart/tap/emask"
+        self.assertIn(trust, commands)
+        self.assertLess(commands.index(trust), commands.index("brew audit --strict dan-hart/tap/emask"))
+
 
 if __name__ == "__main__":
     unittest.main()

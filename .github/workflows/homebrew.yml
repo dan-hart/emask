@@ -77,6 +77,7 @@ jobs:
           brew tap dan-hart/tap
           tap_path="$(brew --repository dan-hart/tap)"
           cp tap/Formula/emask.rb "$tap_path/Formula/emask.rb"
+          brew trust --formula dan-hart/tap/emask
           brew style dan-hart/tap/emask
           brew audit --strict dan-hart/tap/emask
           brew install dan-hart/tap/emask
