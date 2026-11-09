@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.4 — 2026-11-09
+
+- Mint masked addresses on iPhone with a Shortcut and an API behind Tailscale
+  Serve. Run the Shortcut directly to use your Emask default, or from Safari’s
+  share sheet to use DuckDuckGo. Both paths copy the alias to your clipboard.
+- Bundle the API server, Shortcut generator, and setup guide in the release
+  archives. Provider credentials stay on the host running Emask.
+
 ## 0.1.3 — 2026-10-28
 
 - Automatically publish the Homebrew formula after stable releases, with

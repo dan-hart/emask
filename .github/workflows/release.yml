@@ -42,6 +42,9 @@ jobs:
           cp "target/${{ matrix.target }}/release/emask" README.md LICENSE CHANGELOG.md CONTRIBUTING.md SECURITY.md "dist/$name/"
           mkdir -p "dist/$name/docs"
           cp docs/homebrew.md docs/shortcuts.md "dist/$name/docs/"
+          mkdir -p "dist/$name/contrib/shortcuts" "dist/$name/contrib/tailnet"
+          cp contrib/shortcuts/build.py "dist/$name/contrib/shortcuts/"
+          cp contrib/tailnet/serve.py "dist/$name/contrib/tailnet/"
           tar -C dist -czf "dist/$name.tar.gz" "$name"
           (cd dist && shasum -a 256 "$name.tar.gz" > "$name.tar.gz.sha256")
       - uses: actions/upload-artifact@v4

@@ -70,6 +70,9 @@ On an always-on Tailscale device, install Emask and Python 3.9 or later. Run
 `emask setup` as the user that will run the server. Make sure that user has a
 default provider and a working DuckDuckGo provider named `ddg`.
 
+Run the following commands from a repository checkout or an extracted
+[release archive](https://github.com/dan-hart/emask/releases/latest).
+
 ```bash
 python3 contrib/tailnet/serve.py --allow-login YOUR_TAILSCALE_LOGIN
 ```
