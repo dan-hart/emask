@@ -16,6 +16,7 @@ jobs:
           python-version: "3.12"
       - run: python3 -m pip install PyYAML==6.0.2
       - run: python3 -m unittest discover -s tests -p 'test_homebrew*.py' -v
+      - run: python3 -m unittest discover -s tests -p 'test_tailnet.py' -v
   test:
     strategy:
       matrix:

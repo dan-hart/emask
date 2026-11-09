@@ -225,6 +225,8 @@ in-process, emask drops into anything that can run a command:
 
 - **Apple Shortcuts / Raycast / Alfred:** see [docs/shortcuts.md](docs/shortcuts.md)
   for ready-made Shortcuts that wrap `emask ddg` and `emask fm --for …`.
+- **iPhone:** use [Tailscale Serve and an iOS Shortcut](docs/shortcuts.md#iphone-over-tailscale)
+  to mint and copy an address from an always-on host.
 - **Shell:** `alias mask='emask fm --for'`
 - **Scripts:** `emask ddg --json --no-copy | jq -r .email`
 
